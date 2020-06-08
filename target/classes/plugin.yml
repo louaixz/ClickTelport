@@ -1,0 +1,21 @@
+name: Clicktp
+version: 1.0-SNAPSHOT
+main: me.daz.clicktp
+api-version: 1.13
+description: a simple tp plugin
+commands:
+  tpa:
+    description: telport to player
+    usage: /<command> <player>
+  tpahere:
+    description: telport player to here
+    sage: /<command> <player>
+  tpyes:
+    description: telport to player
+    usage: /<command>
+  tpno:
+    description: telport to player
+    usage: /<command>
+  getpos:
+    description: getplayerposition
+    usage: /<command>
