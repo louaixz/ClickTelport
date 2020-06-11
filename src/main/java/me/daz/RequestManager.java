@@ -9,6 +9,7 @@ public class RequestManager {
     private final ConcurrentHashMap<Request, Date> pendingRequests;
 
     RequestManager() {
-        this.pendingRequests = new ConcurrentHashMap<>();
+        pendingRequests = new ConcurrentHashMap<>();
     }
+
 }

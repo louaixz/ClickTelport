@@ -20,7 +20,6 @@ public final class clicktp extends logtask {
     HashMap<Player,Player> tpa = new HashMap<>();
     HashMap<Player, Boolean> tpahere = new HashMap<>();
     ArrayList<Player> sent = new ArrayList<>();
-
     public void onEnable() {
         logENABLE();
     }
@@ -41,37 +40,14 @@ public final class clicktp extends logtask {
         }
 
         if (commandlabel.equalsIgnoreCase("tpyes")){
-
-            if (tpa.get(playerA)==null) {
-                playerA.sendMessage("無任何傳送請求");
-                return true;
-            }else if (!tpahere.get(playerA)){
-                tpa.get(playerA).teleport(playerA);
-                tpa.get(playerA).sendMessage("對方已接受請求,開始傳送...");
-                playerA.sendMessage("已接受請求");
-            }
-            else {
-                playerA.teleport(tpa.get(playerA));
-                tpa.get(playerA).sendMessage("已接受請求,開始傳送...");
-                playerA.sendMessage("已接受請求");
-            }
-            sent.remove(tpa.get(playerA));
-            tpa.put(playerA,null);
-            tpahere.put(playerA,null);
+            tpACCEPT(playerA);
             return true;
-        }else if (commandlabel.equalsIgnoreCase("tpno")) {
-            if(tpa.get(playerA)==null) {
-                playerA.sendMessage("無任何傳送請求");
-                return true;
-            } else  {
-                tpa.get(playerA).sendMessage("對方已拒絕...");
-                playerA.sendMessage("已拒絕請求");
-                sent.remove(tpa.get(playerA));
-                tpa.put(playerA,null);
-                tpahere.put(playerA,null);
-                return true;
-            }
         }
+        if (commandlabel.equalsIgnoreCase("tpno")){
+            tpDENY(playerA);
+            return true;
+        }
+
         if (commandlabel.equalsIgnoreCase("getpos")) {
             if (Bukkit.getPlayerExact(args[0]) != null) {
                 Player getplayerpos = playerA.getServer().getPlayer(args[0]);
@@ -82,7 +58,7 @@ public final class clicktp extends logtask {
                 }
             }
         }
-        return true;
+        return false;
     }
     private void askTPA(Player playerB, Player playerA, String[] args) {
 
@@ -91,7 +67,7 @@ public final class clicktp extends logtask {
                 playerA.spigot().sendMessage(new ComponentBuilder("請正確輸入玩家名稱").color(ChatColor.RED).create());
                 return;
             }
-            if (args.length == 1 && playerB == null) {
+            if (playerB == null) {
                 playerA.spigot().sendMessage(new ComponentBuilder("此玩家不在線上").color(ChatColor.RED).create());
                 return;
             }
@@ -100,7 +76,7 @@ public final class clicktp extends logtask {
                 return;
             }
             // Collection players = Bukkit.getOnlinePlayers();
-            if (args.length == 1 && Bukkit.getPlayerExact(args[0]) != null) {
+            if (Bukkit.getPlayerExact(args[0]) != null) {
                 if (!sent.contains(playerA) && playerB != null) {
                     playerB.spigot().sendMessage((new ComponentBuilder(playerA.getDisplayName() + "想要傳送到你的位置")).color(ChatColor.GOLD).bold(true)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("點擊下方接受或拒絕")).color(ChatColor.GOLD)
@@ -128,7 +104,7 @@ public final class clicktp extends logtask {
                     playerA.spigot().sendMessage(new ComponentBuilder("請正確輸入玩家名稱").color(ChatColor.RED).create());
                     return ;
                 }
-                if (args.length==1&&playerB ==null){
+                if (playerB == null){
                     playerA.spigot().sendMessage(new ComponentBuilder("此玩家不在線上").color(ChatColor.RED).create());
                     return ;
                 }
@@ -136,7 +112,7 @@ public final class clicktp extends logtask {
                     playerA.spigot().sendMessage(new ComponentBuilder("請不要傳自己").color(ChatColor.RED).create());
                     return ;
                 }
-                if (args.length==1 && Bukkit.getPlayerExact(args[0])!=null){
+                if (Bukkit.getPlayerExact(args[0]) != null){
                     if (!sent.contains(playerA)&&playerB != null) {
                         playerB.spigot().sendMessage((new ComponentBuilder(playerA.getDisplayName()+"想要傳送到你到他的位置")).color(ChatColor.GOLD).bold(true)
                                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("點擊下方接受或拒絕")).color(ChatColor.GOLD)
@@ -157,10 +133,38 @@ public final class clicktp extends logtask {
                 playerA.sendMessage("§c請求已存在");
             }
     }
-    private void tpACCEPT(Player playerB, Player playerA){
+    private void tpACCEPT(Player playerA){
+        if (tpa.get(playerA)==null) {
+            playerA.sendMessage("無任何傳送請求");
+            return ;
+        }else if (!tpahere.get(playerA)){
+            tpa.get(playerA).teleport(playerA);
+            tpa.get(playerA).sendMessage("對方已接受請求,開始傳送...");
+            playerA.sendMessage("已接受請求");
+        }
+        else {
+            playerA.teleport(tpa.get(playerA));
+            tpa.get(playerA).sendMessage("已接受請求,開始傳送...");
+            playerA.sendMessage("已接受請求");
+        }
+        sent.remove(tpa.get(playerA));
+        tpa.put(playerA,null);
+        tpahere.put(playerA,null);
 
     }
+    private void tpDENY(Player playerA){
+        if(tpa.get(playerA)==null) {
+            playerA.sendMessage("無任何傳送請求");
+        } else  {
+            tpa.get(playerA).sendMessage("對方已拒絕...");
+            playerA.sendMessage("已拒絕請求");
+            sent.remove(tpa.get(playerA));
+            tpa.put(playerA,null);
+            tpahere.put(playerA,null);
+        }
+    }
 }
+
 
 
 
