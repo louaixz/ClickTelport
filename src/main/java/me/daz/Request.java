@@ -2,7 +2,10 @@ package me.daz;
 
 import org.bukkit.entity.Player;
 
+import java.util.Calendar;
+
 public class Request {
+    private int timeoutValue;
     private final Player playerB;
     private final Player playerA;
 
@@ -15,4 +18,14 @@ public class Request {
     Player getPlayerA(){return playerA;}
 
 
+    Player getRequester() {
+        return playerA;
+    }
+
+    Player getTarget() {
+        return playerB;
+    }
+    boolean isSameRequest(Request newRequest){
+        return this.playerB.equals(newRequest.playerB)&&this.playerA.equals(newRequest.playerA);
+    }
 }

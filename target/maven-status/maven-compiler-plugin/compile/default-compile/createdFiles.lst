@@ -1,4 +1,5 @@
-me\daz\tasks\logtask.class
+me\daz\logtask.class
+me\daz\tasks\ClearOldRequest.class
 me\daz\Request.class
 me\daz\RequestManager.class
 me\daz\clicktp.class
