@@ -17,14 +17,14 @@ public class Request {
     Player getPlayerB(){return playerB;}
     Player getPlayerA(){return playerA;}
 
-
+    Player getTarget() {
+        return playerB;
+    }
     Player getRequester() {
         return playerA;
     }
 
-    Player getTarget() {
-        return playerB;
-    }
+
     boolean isSameRequest(Request newRequest){
         return this.playerB.equals(newRequest.playerB)&&this.playerA.equals(newRequest.playerA);
     }

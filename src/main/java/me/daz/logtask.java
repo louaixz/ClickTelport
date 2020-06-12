@@ -21,7 +21,7 @@ public class logtask extends JavaPlugin {
     public int timeoutValue;
     private HashMaps hashMaps = new HashMaps();
     HashMap<Player,Player>tpa = hashMaps.gettpaMap();
-    HashMap<Player,Boolean>tpahere = hashMaps.gettpaHereMap();
+    HashMap<Player,Player>tpahere = hashMaps.gettpaHereMap();
     ArrayList<Player>sent = hashMaps.sentArray();
     private  Map<Player, Timer> TimerMap = new HashMap<>();
     Logger logger = this.getLogger();
@@ -41,7 +41,6 @@ public class logtask extends JavaPlugin {
 
 
         protected void askTPA(Player playerB, Player playerA, String[] args) {
-
 
             if (!sent.contains(playerA)) {
 
@@ -72,10 +71,12 @@ public class logtask extends JavaPlugin {
                             .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpno")).color(ChatColor.RED).bold(true)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("拒絕")).color(ChatColor.BLUE)
                                     .create())).create());
-                        requestManager.addRequest(playerB,playerA);
+                        //requestManager.addRequest(playerB,playerA);
+                        DelayClearTP(playerB);
                         tpa.put(playerB, playerA);
-                        tpahere.put(playerB, false);
+                        tpahere.put(playerB, playerA);
                         sent.add(playerA);
+
                     }
                 }
             } else if (sent.contains(playerA)) {
@@ -110,9 +111,9 @@ public class logtask extends JavaPlugin {
                             .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/tpno")).color(ChatColor.RED).bold(true)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("拒絕")).color(ChatColor.BLUE)
                                     .create())).create());
-
+                    DelayClearTP(playerB);
                     tpa.put(playerB, playerA);
-                    tpahere.put(playerB,true);
+                    tpahere.put(playerB,playerA);
                     sent.add(playerA);
                 }
             }
@@ -123,20 +124,24 @@ public class logtask extends JavaPlugin {
     protected void tpACCEPT(Player playerA){
         if (tpa.get(playerA)==null) {
             playerA.sendMessage("無任何傳送請求");
-            return ;
-        }else if (!tpahere.get(playerA)){
+        }else if (tpahere.get(playerA)!=null){
             tpa.get(playerA).teleport(playerA);
             tpa.get(playerA).sendMessage("對方已接受請求,開始傳送...");
             playerA.sendMessage("已接受請求");
+            tpa.put(playerA,null);
+            tpahere.put(playerA,null);
+            sent.clear();
+
         }
         else {
             playerA.teleport(tpa.get(playerA));
             tpa.get(playerA).sendMessage("已接受請求,開始傳送...");
             playerA.sendMessage("已接受請求");
+            tpa.put(playerA,null);
+            tpahere.put(playerA,null);
+            sent.clear();
         }
-        sent.remove(tpa.get(playerA));
-        tpa.put(playerA,null);
-        tpahere.put(playerA,null);
+
 
     }
     protected void tpDENY(Player playerA){
@@ -177,12 +182,21 @@ public class logtask extends JavaPlugin {
     }
     public static class HashMaps{
             private HashMap<Player,Player> tpa = new HashMap<>();
-            private HashMap<Player, Boolean> tpahere = new HashMap<>();
+            private HashMap<Player, Player> tpahere = new HashMap<>();
             private ArrayList<Player> sent = new ArrayList<>();
             public HashMap<Player, Player> gettpaMap(){return this.tpa;}
-            public HashMap<Player, Boolean> gettpaHereMap(){return this.tpahere;}
+            public HashMap<Player, Player> gettpaHereMap(){return this.tpahere;}
             public ArrayList<Player> sentArray(){return this.sent;}
 
+    }
+
+    private void DelayClearTP(Player targetPlayer) {
+        Timer timer = new Timer();
+        TimerMap.put(targetPlayer, timer);
+        TpRequestClearer clearer = new TpRequestClearer();
+        clearer.setPlayer(targetPlayer);
+        clearer.setMap(hashMaps);
+        timer.schedule(clearer, 5000);
     }
 
 

@@ -13,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 class RequestManager  {
-    private logtask.HashMaps HashMap =new logtask.HashMaps();
-
 
     private final ConcurrentHashMap<Request, Date> pendingRequests;
 
