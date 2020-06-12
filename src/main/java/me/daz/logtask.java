@@ -1,6 +1,5 @@
 package me.daz;
 
-import me.daz.RequestManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -13,18 +12,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
 import java.util.logging.Logger;
 
 public class logtask extends JavaPlugin {
     private RequestManager requestManager = new RequestManager();
-
-    private int timeoutValue;
+    public int timeoutValue;
+    private HashMaps hashMaps = new HashMaps();
+    HashMap<Player,Player>tpa = hashMaps.gettpaMap();
+    HashMap<Player,Boolean>tpahere = hashMaps.gettpaHereMap();
+    ArrayList<Player>sent = hashMaps.sentArray();
+    private  Map<Player, Timer> TimerMap = new HashMap<>();
     Logger logger = this.getLogger();
-    HashMap<Player,Player> tpa = new HashMap<>();
-    HashMap<Player, Boolean> tpahere = new HashMap<>();
-    ArrayList<Player> sent = new ArrayList<>();
-        public void logENABLE(){
+
+
+
+    public void logENABLE(){
             PluginDescriptionFile plugininfo = this.getDescription();
+
             this.logger.info(plugininfo.getName() + " Version:" + plugininfo.getVersion() + " has been enabled ");
             this.logger.info("The simple click telport plugin!");
         }
@@ -33,7 +39,9 @@ public class logtask extends JavaPlugin {
             this.logger.info(fileinfo.getName() + " Version:" + fileinfo.getVersion() + "has been disabled");
         }
 
+
         protected void askTPA(Player playerB, Player playerA, String[] args) {
+
 
             if (!sent.contains(playerA)) {
 
@@ -64,6 +72,7 @@ public class logtask extends JavaPlugin {
                             .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpno")).color(ChatColor.RED).bold(true)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("拒絕")).color(ChatColor.BLUE)
                                     .create())).create());
+                        requestManager.addRequest(playerB,playerA);
                         tpa.put(playerB, playerA);
                         tpahere.put(playerB, false);
                         sent.add(playerA);
@@ -101,6 +110,7 @@ public class logtask extends JavaPlugin {
                             .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/tpno")).color(ChatColor.RED).bold(true)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("拒絕")).color(ChatColor.BLUE)
                                     .create())).create());
+
                     tpa.put(playerB, playerA);
                     tpahere.put(playerB,true);
                     sent.add(playerA);
@@ -150,12 +160,31 @@ public class logtask extends JavaPlugin {
             }
         }
     }
+
+    void loadConfig(){
+        getConfig().addDefault("request-timeout-seconds",10);
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+    }
     static void sendMessage(Player playerA, String message){
         playerA.sendMessage(message);
+    }
+    public void TimeoutValue(int timeoutValue){
+        this.timeoutValue=timeoutValue;
     }
     public void clearOldRequests() {
         requestManager.clearOldRequests(timeoutValue);
     }
+    public static class HashMaps{
+            private HashMap<Player,Player> tpa = new HashMap<>();
+            private HashMap<Player, Boolean> tpahere = new HashMap<>();
+            private ArrayList<Player> sent = new ArrayList<>();
+            public HashMap<Player, Player> gettpaMap(){return this.tpa;}
+            public HashMap<Player, Boolean> gettpaHereMap(){return this.tpahere;}
+            public ArrayList<Player> sentArray(){return this.sent;}
+
+    }
+
 
 }
 

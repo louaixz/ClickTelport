@@ -1,15 +1,18 @@
 package me.daz;
 
+import me.daz.tasks.ClearOldRequest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
 public final class clicktp extends logtask {
-
     public void onEnable() {
+        int getTimeOutValue = getConfig().getInt("request-timeout-seconds");
         loadConfig();
+        TimeoutValue(getTimeOutValue);
         logENABLE();
+        new ClearOldRequest(this).runTaskTimer(this,0,20);
     }
     public void onDisable() {
         logDISABLE();
@@ -41,11 +44,7 @@ public final class clicktp extends logtask {
         }
         return false;
     }
-    private void loadConfig(){
-        getConfig().addDefault("request-timeout-seconds",10);
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-    }
+
 }
 
 

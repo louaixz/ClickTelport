@@ -13,6 +13,5 @@ public class ClearOldRequest extends BukkitRunnable {
     @Override
     public void run() {
         plugin.clearOldRequests();
-
     }
 }

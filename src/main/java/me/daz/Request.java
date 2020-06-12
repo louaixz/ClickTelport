@@ -2,10 +2,10 @@ package me.daz;
 
 import org.bukkit.entity.Player;
 
-import java.util.Calendar;
+
 
 public class Request {
-    private int timeoutValue;
+
     private final Player playerB;
     private final Player playerA;
 

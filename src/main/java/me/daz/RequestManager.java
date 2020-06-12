@@ -5,12 +5,16 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 
-class RequestManager {
+class RequestManager  {
+    private logtask.HashMaps HashMap =new logtask.HashMaps();
+
 
     private final ConcurrentHashMap<Request, Date> pendingRequests;
 
