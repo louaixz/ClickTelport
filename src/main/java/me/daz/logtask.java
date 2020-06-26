@@ -6,7 +6,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
@@ -19,18 +18,18 @@ import java.util.Timer;
 import java.util.logging.Logger;
 
 public class logtask extends MessageData  {
-    private RequestManager requestManager = new RequestManager();
+    private final RequestManager requestManager = new RequestManager();
     public static logtask instance;
-    public  MessageData messageData;
     public int timeoutValue;
-    private HashMaps hashMaps = new HashMaps();
-    private Map<Player, Timer> TimerMap = new HashMap<>();
+    private final HashMaps hashMaps = new HashMaps();
+    private final Map<Player, Timer> TimerMap = new HashMap<>();
     HashMap<Player,Player>tpa = hashMaps.gettpaMap();
     HashMap<Player,Player>tpahere = hashMaps.gettpaHereMap();
     ArrayList<Player>sent = hashMaps.sentArray();
 
 
-    private Logger logger = this.getLogger();
+    private final Logger logger = this.getLogger();
+
 
 
     public void logENABLE(){
@@ -48,7 +47,6 @@ public class logtask extends MessageData  {
 
 
         protected void askTPA(Player playerB, Player playerA, String[] args) {
-            org.bukkit.ChatColor color;
 
             if (!sent.contains(playerA)) {
 
@@ -163,20 +161,12 @@ public class logtask extends MessageData  {
             tpahere.put(playerA,null);
         }
     }
-    protected void getPOS(Player playerA, String[] args) {
-        if (Bukkit.getPlayerExact(args[0]) != null) {
-            Player getplayerpos = playerA.getServer().getPlayer(args[0]);
-            if (getplayerpos != null) {
-                Location getplayerposLocation = getplayerpos.getLocation();
-                getplayerpos.sendMessage("your position is" + getplayerposLocation.getX() + "," + getplayerposLocation.getY() + "," + getplayerposLocation.getZ());
-                playerA.sendMessage("the position is " + getplayerposLocation.toString());
-            }
-        }
-    }
 
     void loadConfig()  {
+        int getTimeOutValue = getConfig().getInt("request-timeout-seconds");
         getConfig().addDefault("request-timeout-seconds",10);
         getConfig().options().copyDefaults(true);
+        TimeoutValue(getTimeOutValue);
         saveConfig();
     }
     public static synchronized void addLogEntry(String entry) {
@@ -191,14 +181,15 @@ public class logtask extends MessageData  {
    /* public static void sendMessage(CommandSender player, ChatColor color, MessageSpecifier specifier) {
         sendMessage(player, color, specifier.messageID, specifier.messageParams);
     }*/
-    public void sendMessage(CommandSender player, ChatColor color, Messages messageID,String... args) {
+   /*public void sendMessage(CommandSender player, ChatColor color, Messages messageID) {
+       sendMessage(player, color, messageID, 0L);
+   }*/
 
+    public void sendMessage(CommandSender player, ChatColor color, Messages messageID) {
         String message = getMessage(messageID);
-
-
-
         sendMessage(player, color, message);
     }
+
     public static void sendMessage(CommandSender player, ChatColor color, String message) {
         if (message != null && message.length() != 0) {
             if (player == null) {
@@ -209,10 +200,8 @@ public class logtask extends MessageData  {
 
         }
     }
-    /*static void sendMessage(CommandSender player, ChatColor color, Messages messageID, long delayInTicks, String... args) {
-        String message = instance.messageData.getMessage(messageID,args);
-        sendMessage(player, color, message, delayInTicks);
-    }*/
+
+
     public static void sendMessage(CommandSender player, ChatColor color, String message, long delayInTicks) {
         SendPlayerMessageTask task = new SendPlayerMessageTask(player, color, message);
         if (delayInTicks > 0L) {
@@ -231,9 +220,9 @@ public class logtask extends MessageData  {
         requestManager.clearOldRequests(timeoutValue);
     }
     public static class HashMaps{
-            private HashMap<Player,Player> tpa = new HashMap<>();
-            private HashMap<Player, Player> tpahere = new HashMap<>();
-            private ArrayList<Player> sent = new ArrayList<>();
+            private final HashMap<Player,Player> tpa = new HashMap<>();
+            private final HashMap<Player, Player> tpahere = new HashMap<>();
+            private final ArrayList<Player> sent = new ArrayList<>();
             public HashMap<Player, Player> gettpaMap(){return this.tpa;}
             public HashMap<Player, Player> gettpaHereMap(){return this.tpahere;}
             public ArrayList<Player> sentArray(){return this.sent;}
@@ -248,9 +237,7 @@ public class logtask extends MessageData  {
         TpRequestClearer clearer = new TpRequestClearer();
         clearer.setPlayer(targetPlayer);
         clearer.setMap(hashMaps);
-        timer.schedule(clearer, 5000);
+        timer.schedule(clearer, timeoutValue*1000);
     }
-
-
 }
 

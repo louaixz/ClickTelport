@@ -28,10 +28,9 @@ public class MessageData extends JavaPlugin {
         this.addDefault(defaults, Messages.tpahereNopermission, "you has no permission to Use tpahere.");
         this.addDefault(defaults, Messages.tpanoPermission,"you has no permission to Use tpa.");
 
-        for(int i = 0; i < MessageIDs.length; ++i) {
-            Messages messageID = MessageIDs[i];
+        for (Messages messageID : MessageIDs) {
             customMessage messageData = (customMessage) defaults.get(messageID.name());
-            this.messages[messageID.ordinal()] = config.getString("Messages."+ messageID.name()  + ".Text", messageData.text);
+            this.messages[messageID.ordinal()] = config.getString("Messages." + messageID.name() + ".Text", messageData.text);
             config.set("Messages." + messageID.name() + ".Text", this.messages[messageID.ordinal()]);
             // this.messages[messageID.ordinal()] = this.messages[messageID.ordinal()].replace('$', '§');
         }
@@ -48,14 +47,13 @@ public class MessageData extends JavaPlugin {
     }
 
     public synchronized String getMessage(Messages messageID) {
-        String message = this.messages[messageID.ordinal()];
 
         /*for(int i = 0; i < args.length; ++i) {
             String param = args[i];
             message = message.replace("{" + i + "}", param);
         }*/
 
-        return message;
+        return this.messages[messageID.ordinal()];
     }
 
         private void addDefault (HashMap < String, customMessage > defaults, Messages id, String text){

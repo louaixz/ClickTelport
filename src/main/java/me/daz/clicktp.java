@@ -15,11 +15,8 @@ public final class clicktp extends logtask implements Listener {
 
     public void onEnable() {
 
-        int getTimeOutValue = getConfig().getInt("request-timeout-seconds");
         this.loadConfig();
 
-
-        TimeoutValue(getTimeOutValue);
 
         logENABLE();
         new ClearOldRequest(this).runTaskTimer(this,0,20);
@@ -40,11 +37,7 @@ public final class clicktp extends logtask implements Listener {
             } else if(args.length != 1){
                     sendMessage(playerA,"null");
                     return true;
-                } else if (playerA.equals(getServer().getPlayer(args[0]))) {
-                playerA.spigot().sendMessage(new ComponentBuilder("請不要傳自己").color(ChatColor.RED).create());
-                return true;
-            }
-
+                }
                 else{
                     sendMessage(playerA, ChatColor.RED, Messages.tpanoPermission);
                     return true;}
@@ -65,10 +58,6 @@ public final class clicktp extends logtask implements Listener {
         if (commandlabel.equalsIgnoreCase("tpno")){
             tpDENY(playerA);
             return true;
-        }
-
-        if (commandlabel.equalsIgnoreCase("getpos")) {
-            getPOS(playerA,args);
         }
         return false;
     }
