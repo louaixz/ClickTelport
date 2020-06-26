@@ -22,22 +22,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-
-                <configuration>
-                    <outputDirectory>
-                        D:\Mc\MINECRAFT_Develop\1.15.2\plugins
-                    </outputDirectory>
-
-                    <excludes>
-
-                    </excludes>
-                </configuration>
-
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
@@ -45,7 +29,6 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -63,7 +46,6 @@
                 </executions>
             </plugin>
         </plugins>
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

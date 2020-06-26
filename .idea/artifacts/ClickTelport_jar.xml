@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="ClickTelport:jar">
-    <output-path>$PROJECT_DIR$/../../../Mc/MINECRAFT_Develop/1.15.2/plugins</output-path>
-    <root id="archive" name="ClickTelport.jar">
-      <element id="module-output" name="ClickTelport" />
-    </root>
-  </artifact>
-</component>

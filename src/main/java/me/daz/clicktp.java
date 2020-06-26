@@ -1,23 +1,23 @@
 package me.daz;
 
 import me.daz.tasks.ClearOldRequest;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 
-public final class clicktp extends logtask implements Listener {
-
+public final class clicktp extends logtask {
     public void onEnable() {
+<<<<<<< HEAD
 
         this.loadConfig();
 
 
+=======
+        int getTimeOutValue = getConfig().getInt("request-timeout-seconds");
+        loadConfig();
+        TimeoutValue(getTimeOutValue);
+>>>>>>> parent of 4e0157f... add message.yml to custom message
         logENABLE();
         new ClearOldRequest(this).runTaskTimer(this,0,20);
     }
@@ -25,12 +25,11 @@ public final class clicktp extends logtask implements Listener {
         logDISABLE();
     }
 
-
     public boolean onCommand(CommandSender sender, Command command, String commandlabel, String[] args) {
 
         Player playerA = (Player) sender ;
-
         if (command.getLabel().equalsIgnoreCase("tpa")) {
+<<<<<<< HEAD
             if (playerHasPermission(playerA)) {
                 askTPA(getServer().getPlayer(args[0]), playerA, args);
 
@@ -41,14 +40,14 @@ public final class clicktp extends logtask implements Listener {
                 else{
                     sendMessage(playerA, ChatColor.RED, Messages.tpanoPermission);
                     return true;}
+=======
+            askTPA(getServer().getPlayer(args[0]),playerA,args);
+            return true;
+>>>>>>> parent of 4e0157f... add message.yml to custom message
         }
         if (command.getLabel().equalsIgnoreCase("tpahere")) {
-            if (playerHasPermission(playerA)) {
-                askTPAhere(getServer().getPlayer(args[0]), playerA, args);
-            } else {
-                sendMessage(playerA, ChatColor.RED, Messages.tpahereNopermission);
-                return true;
-            }
+            askTPAhere(getServer().getPlayer(args[0]),playerA,args);
+            return true;
         }
 
         if (commandlabel.equalsIgnoreCase("tpyes")){
@@ -60,14 +59,6 @@ public final class clicktp extends logtask implements Listener {
             return true;
         }
         return false;
-    }
-    @EventHandler
-    public void PlayerChat(AsyncPlayerChatEvent event) {
-
-        Player p = event.getPlayer();
-        if (p.hasPermission("Clicktp.tpa")|p.hasPermission("Clicktp.tpahere")) {
-            p.setPlayerListName(ChatColor.GRAY + "[MEMBER] " + p.getDisplayName());
-        }
     }
 
 }

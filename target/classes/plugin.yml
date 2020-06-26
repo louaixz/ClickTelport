@@ -21,8 +21,3 @@ commands:
   getpos:
     description: getplayerposition
     usage: /<command>
-permissions:
-  Clicktp.tpa:
-      description: /tpa to player
-  Clicktp.tpahere:
-      description: /tpahere to get player
