@@ -7,11 +7,9 @@ commands:
   tpa:
     description: telport to player
     usage: /<command> <player>
-    permissions: Clicktp.tpa
   tpahere:
     description: telport player to here
     sage: /<command> <player>
-    permissions: Clicktp.tpahere
   tpyes:
     description: telport to player
     usage: /<command>
@@ -21,3 +19,8 @@ commands:
   getpos:
     description: getplayerposition
     usage: /<command>
+permissions:
+  Clicktp.tpa:
+      description: /tpa to player
+  Clicktp.tpahere:
+      description: /tpahere to get player
